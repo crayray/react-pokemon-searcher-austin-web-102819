@@ -4,7 +4,34 @@ import PokemonForm from './PokemonForm'
 import Search from './Search'
 import { Container } from 'semantic-ui-react'
 
+const API = "http://localhost:3000/pokemon";
 class PokemonPage extends React.Component {
+
+  state= {
+    pokemon: []
+  }
+  
+  
+  componentDidMount() {
+    fetch(API)
+      .then(response => response.json())
+      .then(data => {
+        this.setState(
+          {
+            pokemon: data
+          },
+
+          () => {
+            console.log(this.state);
+          }
+        );
+      });
+  }
+ 
+  filterPokemon = () => {
+    console.log("wors")
+  }
+ 
   render() {
     return (
       <Container>
@@ -12,10 +39,12 @@ class PokemonPage extends React.Component {
         <br />
         <PokemonForm />
         <br />
-        <Search onChange={() => console.log('🤔')} />
+        <Search onChange={this.filterPokemon()} />
         <br />
-        <PokemonCollection />
+        <PokemonCollection pokemon={this.state.pokemon} />
       </Container>
+  
+      
     )
   }
 }
